@@ -2,22 +2,26 @@ body {
     font-family: sans-serif;
     text-align: center;
     margin: 20px;
-  }
+}
   
-  input {
+input {
     padding: 5px;
     margin-right: 5px;
-  }
+}
   
-  button {
+button {
     padding: 5px 10px;
     cursor: pointer;
-  }
+}
   
-  #chart {
-    width: 80%;
-    margin: 20px auto;
-    border: 1px solid #ccc;
-    min-height: 400px;
-  }
+#chart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;  /* Centers horizontally */
+    width: 500px;  /* Matches the plot width */
+    height: 500px; /* Matches the plot height */
+    border: 1px solid #ccc; /* Optional border for visual clarity */
+}
+
   
