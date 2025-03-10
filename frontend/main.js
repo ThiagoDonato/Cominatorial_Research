@@ -10,6 +10,7 @@ document.getElementById("plotBtn").addEventListener("click", () => {
       x: Array.from(cleanedPerm.keys()), // x = indices
       y: cleanedPerm,                    // y = values
       mode: "markers",
+      marker: { size: 10 },
       type: "scatter"
     };
   
