@@ -91,12 +91,11 @@ document.getElementById("toggleOptimizerMode").addEventListener("click", () => {
 });
 
 document.getElementById("applyOptimizer").addEventListener("click", () => {
-  if (selectedIndices.length > 0) {
-    //&& selectedIndices.length % 4 === 0
-    optimizeSubsequence();
-  } else {
-    alert("Please select a multiple of 4 points before applying the optimizer.");
-  }
+    if (selectedIndices.length > 0) {
+      optimizeSubsequence();
+    } else {
+      alert("Please select at least one point before applying the optimizer.");
+    }
 });
 
 /******************** POINT CLICK HANDLER ********************/
@@ -110,8 +109,7 @@ function handlePointClick(index) {
       selectedIndices.push(index);
     }
     // Enable/disable Apply Optimizer button
-    document.getElementById("applyOptimizer").disabled =
-      !(selectedIndices.length >= 4 && selectedIndices.length % 4 === 0);
+    document.getElementById("applyOptimizer").disabled = selectedIndices.length === 0;
 
   } else {
     // Swap mode: select exactly two points

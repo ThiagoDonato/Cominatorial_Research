@@ -50,9 +50,6 @@ def apply_optimizer(subseq):
     length = len(subseq)
     print(length)
 
-    if length % 4 != 0:
-        return {"error": "Length must be a multiple of 4 (for now)"}, 400
-
     key = str(length)
     if key not in allstar_table:
         return {"error": "No optimizer available for this length"}, 400
@@ -75,7 +72,7 @@ def apply_optimizer(subseq):
     
     # 6) Unrank them back to original values
     new_subseq = [unrank_map[i] for i in reordered]
-    
+
     return new_subseq
 
 
