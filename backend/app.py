@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, send_from_directory
 from collections import defaultdict
 import os
+import json
 
 app = Flask(__name__, static_folder='../frontend', static_url_path='')
 
@@ -40,11 +41,49 @@ def n3_fitness(perm):
                 out += count_elements_to_right(list1, list(smaller[l]))
     return out
 
+## Helper functions to get data from optimizers
+with open("backend/optimizers.json") as f:
+    allstar_table = json.load(f)
+
+# Function to apply optimizer to a selected subsequence
+def apply_optimizer(subseq):
+    length = len(subseq)
+    print(length)
+
+    if length % 4 != 0:
+        return {"error": "Length must be a multiple of 4 (for now)"}, 400
+
+    key = str(length)
+    if key not in allstar_table:
+        return {"error": "No optimizer available for this length"}, 400
+
+    # 1) Build rank map (value -> rank)
+    sorted_vals = sorted(subseq)
+    rank_map = {val: i for i, val in enumerate(sorted_vals)}
+    # 2) Build unrank map (rank -> value)
+    unrank_map = {i: val for i, val in enumerate(sorted_vals)}
+
+    # 3) Convert subsequence to ranks
+    normalized = [rank_map[val] for val in subseq]
+
+    # 4) Reorder using allstar_table's zero-based pattern
+    optimizer = allstar_table[key]  # e.g. [1,3,0,2] for length=4
+    reordered = [normalized[i] for i in optimizer]
+
+    # 5) Apply the pattern to create the new arrangement
+    reordered = [optimizer[i] for i in range(length)]  # This just copies the pattern
+    
+    # 6) Unrank them back to original values
+    new_subseq = [unrank_map[i] for i in reordered]
+    
+    return new_subseq
+
+
+
 #testing server
 @app.route('/hello', methods=['GET'])
 def hello():
     return "Hello from the backend."
-
 
 # route for counting 2413 patterns
 @app.route('/count_2413', methods=['POST'])
@@ -54,7 +93,18 @@ def count_2413():
     #Placeholder - for now just return length of permutation
     count = n3_fitness(permutation)
     return jsonify({"count":count})
-                   
+
+@app.route('/optimize_subsequence', methods=['POST'])
+def optimize_subsequence():
+    data = request.get_json()
+    subseq = data.get("subseq", [])
+
+    optimized = apply_optimizer(subseq)
+
+    if isinstance(optimized, tuple):
+        return jsonify(optimized[0]), optimized[1]
+
+    return jsonify({"optimized": optimized})                   
 
 # default route to serve front-end from Flask
 @app.route('/')
