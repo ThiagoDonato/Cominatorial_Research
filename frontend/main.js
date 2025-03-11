@@ -98,6 +98,31 @@ document.getElementById("applyOptimizer").addEventListener("click", () => {
     }
 });
 
+document.getElementById("copyPermBtn").addEventListener("click", () => {
+    // Get the current permutation
+    const perm = window.currentPermutation;
+    
+    // Convert to a comma-separated string
+    const permString = perm.join(",");
+    
+    // Copy to clipboard
+    navigator.clipboard.writeText(permString)
+      .then(() => {
+        // Provide feedback that the copy was successful
+        const originalText = document.getElementById("copyPermBtn").innerText;
+        document.getElementById("copyPermBtn").innerText = "Copied!";
+        
+        // Reset button text after 2 seconds
+        setTimeout(() => {
+          document.getElementById("copyPermBtn").innerText = originalText;
+        }, 2000);
+      })
+      .catch(err => {
+        console.error("Failed to copy permutation: ", err);
+        alert("Failed to copy permutation to clipboard.");
+      });
+  });
+
 /******************** POINT CLICK HANDLER ********************/
 function handlePointClick(index) {
   // If we're in optimizer mode, gather points for optimization
