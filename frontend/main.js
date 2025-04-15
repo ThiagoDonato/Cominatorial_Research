@@ -213,4 +213,19 @@ function updateFitnessCount(perm) {
       document.getElementById("countOutput").innerText = data.count;
     })
     .catch(err => console.error("Error calling /count_2413:", err));
-}
+  
+  // Second call: gets the detailed type counts
+  fetch("/count_2413_types", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ permutation: perm })
+  })
+    .then(res => res.json())
+    .then(data => {
+    document.getElementById("type1Output").innerText = data.type1;
+    document.getElementById("type2Output").innerText = data.type2;
+    document.getElementById("type3Output").innerText = data.type3;
+    })
+    .catch(err => console.error("Error calling /count_2413_types:", err));
+
+  }

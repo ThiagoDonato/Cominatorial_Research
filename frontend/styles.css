@@ -62,4 +62,11 @@ p {
     color: #e74c3c;
 }
 
+#type1Output, #type2Output, #type3Output {
+    font-weight: bold;
+    font-family: Courier, monospace;
+    color: #e74c3c;
+}
+
+
   
