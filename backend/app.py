@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, send_from_directory
+from counting_types import count_2413_w_set_type
 from collections import defaultdict
 import os
 import json
@@ -87,9 +88,20 @@ def hello():
 def count_2413():
     data = request.get_json()
     permutation = data.get('permutation', [])
-    #Placeholder - for now just return length of permutation
     count = n3_fitness(permutation)
     return jsonify({"count":count})
+
+# route for counting types of 2413 patterns
+@app.route('/count_2413_types', methods=['POST'])
+def count_2413_types():
+    data = request.get_json()
+    permutation = data.get('permutation', [])
+    # Call your new counting logic
+    # Suppose count_2413_w_set_type(permutation)[2] => [type1_count, type2_count, type3_count]
+    type_counts = count_2413_w_set_type(permutation)
+    type1, type2, type3 = type_counts  # Destructure the list
+
+    return jsonify({"type1": type1, "type2": type2, "type3": type3})
 
 @app.route('/optimize_subsequence', methods=['POST'])
 def optimize_subsequence():
